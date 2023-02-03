@@ -11,11 +11,11 @@ public class Player : MonoBehaviour
         var inputVector = new Vector2(0, 0);
         if (Input.GetKey(KeyCode.W))
         {
-            inputVector.x += 1;
+            inputVector.y += 1;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            inputVector.x -= 1;
+            inputVector.y -= 1;
         }
         if (Input.GetKey(KeyCode.A))
         {
