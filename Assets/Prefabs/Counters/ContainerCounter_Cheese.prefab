@@ -297,7 +297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedCounterVisual: {fileID: 2502663375677089333}
   counterTop: {fileID: 8231269038603994430}
-  kitchenObjectSO: {fileID: 11400000, guid: c6f2ae33fece2ab4bb6621f110ec8e64, type: 2}
+  kitchenObjectSO: {fileID: 11400000, guid: 1f24854c6a1ffaa439c39e3b1f17bbc2, type: 2}
   counterVisual: {fileID: 5138625481508491601}
 --- !u!4 &2729281615483977590 stripped
 Transform:
