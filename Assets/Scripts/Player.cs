@@ -13,7 +13,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     [SerializeField] private LayerMask counterLayerMask;
     private bool isWalking;
     private Vector3 lastInteractDir;
-    private ClearCounter selectedCounter;
+    private BaseCounter selectedCounter;
     private KitchenObject kitchenObject;
 
     private void Start()
@@ -54,11 +54,11 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         
         if (Physics.Raycast(transform.position, lastInteractDir, out var raycastHit, interactDistance, counterLayerMask))
         {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            if (raycastHit.transform.TryGetComponent(out BaseCounter counter))
             {
-                if (selectedCounter != clearCounter)
+                if (selectedCounter != counter)
                 {
-                    selectedCounter = clearCounter;
+                    selectedCounter = counter;
                     selectedCounter.Select();
                 }
             }

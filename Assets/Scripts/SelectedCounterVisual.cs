@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SelectedCounterVisual : MonoBehaviour
 {
-    [SerializeField] private GameObject visual;
+    [SerializeField] private GameObject[] visuals;
 
     public void Show()
     {
-        visual.SetActive(true);
+        foreach (var visual in visuals)
+        {
+            visual.SetActive(true);
+
+        }
     }
 
     public void Hide()
     {
-        visual.SetActive(false);
+        foreach (var visual in visuals)
+        {
+            visual.SetActive(false);
+        }
     }
 }
