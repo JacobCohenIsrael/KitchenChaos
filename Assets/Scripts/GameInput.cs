@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 public class GameInput : MonoBehaviour
 {
     public event EventHandler InteractEvent;
+    public event EventHandler AltInteractEvent;
+    
     private PlayerInputActions playerInputActions;
 
     private void Awake()
@@ -15,6 +17,12 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Enable();
         
         playerInputActions.Player.Interact.performed += InteractPerformed;
+        playerInputActions.Player.AltInteract.performed += AltInteractPerformed;
+    }
+
+    private void AltInteractPerformed(InputAction.CallbackContext callbackContext)
+    {
+        AltInteractEvent?.Invoke(this, EventArgs.Empty);
     }
 
     private void InteractPerformed(InputAction.CallbackContext callbackContext)
