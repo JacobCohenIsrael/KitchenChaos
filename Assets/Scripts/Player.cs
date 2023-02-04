@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IKitchenObjectParent
 {
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float rotateSpeed = 10f;
     [SerializeField] private GameInput gameInput;
-    [FormerlySerializedAs("layerMask")] [SerializeField] private LayerMask counterLayerMask;
+    [SerializeField] private Transform kitchenObjectHoldPoint;
+    [SerializeField] private LayerMask counterLayerMask;
     private bool isWalking;
     private Vector3 lastInteractDir;
     private ClearCounter selectedCounter;
+    private KitchenObject kitchenObject;
 
     private void Start()
     {
@@ -23,7 +25,7 @@ public class Player : MonoBehaviour
     {
         if (selectedCounter != null)
         {
-            selectedCounter.Interact();
+            selectedCounter.Interact(this);
         }
     }
 
@@ -123,5 +125,30 @@ public class Player : MonoBehaviour
         isWalking = moveDir != Vector3.zero;
 
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
+    }
+
+    public Transform GetKitchenObjectFollowTransform()
+    {
+        return kitchenObjectHoldPoint;
+    }
+
+    public void SetKitchenObject(KitchenObject kitchenObject)
+    {
+        this.kitchenObject = kitchenObject;
+    }
+
+    public KitchenObject GetKitchenObject()
+    {
+        return kitchenObject;
+    }
+
+    public void ClearKitchenObject()
+    {
+        kitchenObject = null;
+    }
+
+    public bool HasKitchenObject()
+    {
+        return kitchenObject != null;
     }
 }
