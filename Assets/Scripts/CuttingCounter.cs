@@ -7,6 +7,11 @@ using UnityEngine.Serialization;
 public class CuttingCounter : BaseCounter
 {
     [SerializeField] private CuttingRecipeSO[] cuttingRecipieSOList;
+    [SerializeField] private ProgressBarUI progressBarUI;
+    [SerializeField] private CuttingCounterVisual cuttingCounterVisual;
+
+    private int cuttingProgress;
+    
     public override void Interact(Player player)
     {
         if (HasKitchenObject())
@@ -23,6 +28,12 @@ public class CuttingCounter : BaseCounter
                 if (HasRecipeResult(player.GetKitchenObject().GetKitchenObjectSO()))
                 {
                     player.GetKitchenObject().SetKitchenObjectParent(this);
+                    cuttingProgress = 0;
+
+                    var cuttingRecipeSO = GetCuttingRecipe(GetKitchenObject().GetKitchenObjectSO());
+
+                    var progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax;
+                    progressBarUI.SetProgress(progressNormalized);
                 }
             }
         }
@@ -32,6 +43,13 @@ public class CuttingCounter : BaseCounter
     {
         if (HasKitchenObject() && HasRecipeResult(GetKitchenObject().GetKitchenObjectSO()))
         {
+            cuttingProgress++;
+            cuttingCounterVisual.PlayCut();
+            var cuttingRecipeSO = GetCuttingRecipe(GetKitchenObject().GetKitchenObjectSO());
+            var progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax;
+            progressBarUI.SetProgress(progressNormalized);
+            if (cuttingProgress < cuttingRecipeSO.cuttingProgressMax) return;
+            
             var outputKitchenObjectSO = GetRecipeResult(GetKitchenObject().GetKitchenObjectSO());
             GetKitchenObject().DestroySelf();
 
@@ -41,11 +59,19 @@ public class CuttingCounter : BaseCounter
 
     private bool HasRecipeResult(KitchenObjectSO inputKitchenObjectSO)
     {
-        return (from cuttingRecipeSO in cuttingRecipieSOList where cuttingRecipeSO.input == inputKitchenObjectSO select cuttingRecipeSO.output).FirstOrDefault();
+        var cuttingRecipe = GetCuttingRecipe(inputKitchenObjectSO);
+        return cuttingRecipe != null;
     }
 
     private KitchenObjectSO GetRecipeResult(KitchenObjectSO inputKitchenObjectSO)
     {
-        return (from cuttingRecipeSO in cuttingRecipieSOList where cuttingRecipeSO.input == inputKitchenObjectSO select cuttingRecipeSO.output).FirstOrDefault();
+        var cuttingRecipe = GetCuttingRecipe(inputKitchenObjectSO);
+        return cuttingRecipe != null ? cuttingRecipe.output : null;
+    }
+
+    private CuttingRecipeSO GetCuttingRecipe(KitchenObjectSO inputKitchenObjectSO)
+    {
+        return (from cuttingRecipeSO in cuttingRecipieSOList where cuttingRecipeSO.input == inputKitchenObjectSO select cuttingRecipeSO).FirstOrDefault();
+
     }
 }
