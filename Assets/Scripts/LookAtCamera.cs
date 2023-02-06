@@ -32,6 +32,5 @@ public class LookAtCamera : MonoBehaviour
                 transform.forward = -Camera.main.transform.forward;
                 break;
         }
-        transform.LookAt(Camera.main.transform);
     }
 }
