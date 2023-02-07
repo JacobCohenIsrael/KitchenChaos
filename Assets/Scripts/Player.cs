@@ -22,6 +22,12 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         gameInput.AltInteractEvent += OnAltInteract;
     }
 
+    private void OnDestroy()
+    {
+        gameInput.InteractEvent -= OnInteract;
+        gameInput.AltInteractEvent -= OnAltInteract;
+    }
+
     private void OnInteract(object sender, EventArgs e)
     {
         if (selectedCounter != null)

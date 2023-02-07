@@ -15,9 +15,18 @@ public class GameInput : MonoBehaviour
     {
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
-        
+    }
+
+    private void Start()
+    {
         playerInputActions.Player.Interact.performed += InteractPerformed;
         playerInputActions.Player.AltInteract.performed += AltInteractPerformed;
+    }
+
+    private void OnDestroy()
+    {
+        playerInputActions.Player.Interact.performed -= InteractPerformed;
+        playerInputActions.Player.AltInteract.performed -= AltInteractPerformed;
     }
 
     private void AltInteractPerformed(InputAction.CallbackContext callbackContext)
