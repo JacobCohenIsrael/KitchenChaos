@@ -23,7 +23,7 @@ namespace Counters
                 if (platesSpawned < platesSpawnMax)
                 {
                     platesSpawned++;
-                    
+                    spawnPlateTimer = 0f;
                     OnPlateSpawned?.Invoke(this, EventArgs.Empty);
                 }
             }    

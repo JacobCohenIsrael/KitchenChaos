@@ -76,7 +76,21 @@ namespace Counters
         {
             if (HasKitchenObject())
             {
-                if (!player.HasKitchenObject())
+                if (player.HasKitchenObject())
+                {
+                    if (player.GetKitchenObject().TryGetPlate(out var plateKitchenObject))
+                    {
+                        if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                        {
+                            GetKitchenObject().DestroySelf();
+                            
+                            state = State.Idle;
+                            stoveCounterVisual.Off();
+                            progressBarUI.SetProgress(0f);
+                        }
+                    }
+                }
+                else
                 {
                     GetKitchenObject().SetKitchenObjectParent(player);
 
