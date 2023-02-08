@@ -13,13 +13,13 @@ public class CuttingCounter : BaseCounter
 
     private int cuttingProgress;
     
-    public override void Interact(Player player)
+    public override void Interact(IKitchenObjectParent holder)
     {
         if (HasKitchenObject())
         {
-            if (player.HasKitchenObject())
+            if (holder.HasKitchenObject())
             {
-                if (player.GetKitchenObject().TryGetPlate(out var plateKitchenObject))
+                if (holder.GetKitchenObject().TryGetPlate(out var plateKitchenObject))
                 {
                     if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
                     {
@@ -29,16 +29,16 @@ public class CuttingCounter : BaseCounter
             }
             else
             {
-                GetKitchenObject().SetKitchenObjectParent(player);
+                GetKitchenObject().SetKitchenObjectParent(holder);
             }
         }
         else
         {
-            if (player.HasKitchenObject())
+            if (holder.HasKitchenObject())
             {
-                if (HasRecipeResult(player.GetKitchenObject().GetKitchenObjectSO()))
+                if (HasRecipeResult(holder.GetKitchenObject().GetKitchenObjectSO()))
                 {
-                    player.GetKitchenObject().SetKitchenObjectParent(this);
+                    holder.GetKitchenObject().SetKitchenObjectParent(this);
                     cuttingProgress = 0;
 
                     var cuttingRecipeSO = GetCuttingRecipe(GetKitchenObject().GetKitchenObjectSO());
@@ -50,7 +50,7 @@ public class CuttingCounter : BaseCounter
         }
     }
 
-    public override void AltInteract(Player player)
+    public override void AltInteract(IKitchenObjectParent holder)
     {
         if (HasKitchenObject() && HasRecipeResult(GetKitchenObject().GetKitchenObjectSO()))
         {

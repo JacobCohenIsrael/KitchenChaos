@@ -8,13 +8,13 @@ public class ClearCounter : BaseCounter
 {
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
     
-    public override void Interact(Player player)
+    public override void Interact(IKitchenObjectParent holder)
     {
         if (HasKitchenObject())
         {
-            if (player.HasKitchenObject())
+            if (holder.HasKitchenObject())
             {
-                if (player.GetKitchenObject().TryGetPlate(out var plateKitchenObject))
+                if (holder.GetKitchenObject().TryGetPlate(out var plateKitchenObject))
                 {
                     if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
                     {
@@ -25,23 +25,23 @@ public class ClearCounter : BaseCounter
                 {
                     if (GetKitchenObject().TryGetPlate(out plateKitchenObject))
                     {
-                        if (plateKitchenObject.TryAddIngredient(player.GetKitchenObject().GetKitchenObjectSO()))
+                        if (plateKitchenObject.TryAddIngredient(holder.GetKitchenObject().GetKitchenObjectSO()))
                         {
-                            player.GetKitchenObject().DestroySelf();
+                            holder.GetKitchenObject().DestroySelf();
                         }
                     }
                 }
             }
             else
             {
-                GetKitchenObject().SetKitchenObjectParent(player);
+                GetKitchenObject().SetKitchenObjectParent(holder);
             }
         }
         else
         {
-            if (player.HasKitchenObject())
+            if (holder.HasKitchenObject())
             {
-                player.GetKitchenObject().SetKitchenObjectParent(this);
+                holder.GetKitchenObject().SetKitchenObjectParent(this);
             }
         }
     }

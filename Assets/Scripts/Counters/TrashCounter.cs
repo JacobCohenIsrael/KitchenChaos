@@ -2,11 +2,11 @@ namespace Counters
 {
     public class TrashCounter : BaseCounter
     {
-        public override void Interact(Player player)
+        public override void Interact(IKitchenObjectParent holder)
         {
-            if (player.HasKitchenObject())
+            if (holder.HasKitchenObject())
             {
-                player.GetKitchenObject().DestroySelf();
+                holder.GetKitchenObject().DestroySelf();
             }
         }
     }

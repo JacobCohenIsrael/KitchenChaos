@@ -72,13 +72,13 @@ namespace Counters
             }
         }
 
-        public override void Interact(Player player)
+        public override void Interact(IKitchenObjectParent holder)
         {
             if (HasKitchenObject())
             {
-                if (player.HasKitchenObject())
+                if (holder.HasKitchenObject())
                 {
-                    if (player.GetKitchenObject().TryGetPlate(out var plateKitchenObject))
+                    if (holder.GetKitchenObject().TryGetPlate(out var plateKitchenObject))
                     {
                         if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
                         {
@@ -92,7 +92,7 @@ namespace Counters
                 }
                 else
                 {
-                    GetKitchenObject().SetKitchenObjectParent(player);
+                    GetKitchenObject().SetKitchenObjectParent(holder);
 
                     state = State.Idle;
                     stoveCounterVisual.Off();
@@ -101,11 +101,11 @@ namespace Counters
             }
             else
             {
-                if (player.HasKitchenObject())
+                if (holder.HasKitchenObject())
                 {
-                    if (HasRecipeResult(player.GetKitchenObject().GetKitchenObjectSO()))
+                    if (HasRecipeResult(holder.GetKitchenObject().GetKitchenObjectSO()))
                     {
-                        player.GetKitchenObject().SetKitchenObjectParent(this);
+                        holder.GetKitchenObject().SetKitchenObjectParent(this);
                         fryingRecipeSO = GetFryingRecipe(GetKitchenObject().GetKitchenObjectSO());
                         state = State.Frying;
                         fryingTimer = 0f;

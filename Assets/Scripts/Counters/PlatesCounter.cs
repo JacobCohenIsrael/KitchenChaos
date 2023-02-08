@@ -29,13 +29,13 @@ namespace Counters
             }    
         }
 
-        public override void Interact(Player player)
+        public override void Interact(IKitchenObjectParent holder)
         {
-            if (!player.HasKitchenObject() && platesSpawned > 0)
+            if (!holder.HasKitchenObject() && platesSpawned > 0)
             {
                 platesSpawned--;
 
-                KitchenObject.SpawnKitchenObject(platesKitchenObjectSO, player);
+                KitchenObject.SpawnKitchenObject(platesKitchenObjectSO, holder);
                 OnPlateRemoved?.Invoke(this, EventArgs.Empty);
             }
         }

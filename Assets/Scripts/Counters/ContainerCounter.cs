@@ -8,11 +8,11 @@ public class ContainerCounter : BaseCounter
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
     [SerializeField] private ContainerCounterVisual counterVisual;
     
-    public override void Interact(Player player)
+    public override void Interact(IKitchenObjectParent holder)
     {
-        if (player.HasKitchenObject()) return;
+        if (holder.HasKitchenObject()) return;
 
-        KitchenObject.SpawnKitchenObject(kitchenObjectSO, player);
+        KitchenObject.SpawnKitchenObject(kitchenObjectSO, holder);
         counterVisual.PlayOpenClose();
     }
 
