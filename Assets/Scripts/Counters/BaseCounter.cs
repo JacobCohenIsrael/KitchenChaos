@@ -10,12 +10,12 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent
     private KitchenObject kitchenObject;
     public virtual void Interact(IKitchenObjectParent holder)
     {
-        
+        // CR: No need to interact with player
     }
 
     public virtual void AltInteract(IKitchenObjectParent holder)
     {
-        
+        // CR: No need to interact with player, are we even using the holder?
     }
     
     public void Select()
