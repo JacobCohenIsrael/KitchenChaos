@@ -7,6 +7,10 @@ using Random = UnityEngine.Random;
 
 public class DeliveryManager : MonoBehaviour
 {
+
+    public event EventHandler OnRecipeSpawned;
+    public event EventHandler OnRecipeCompleted;
+    
     // CR: This is bad, because it creates a tight coupling and testing becomes hard
     public static DeliveryManager Instance { get; private set; }
     
@@ -35,6 +39,8 @@ public class DeliveryManager : MonoBehaviour
 
             var pendingRecipeSo = recipeListSo.recipeSoList[Random.Range(0, recipeListSo.recipeSoList.Count)];
             pendingRecipeSoList.Add(pendingRecipeSo);
+            
+            OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -69,9 +75,17 @@ public class DeliveryManager : MonoBehaviour
                 if (plateContentsMatchesRecipe)
                 {
                     pendingRecipeSoList.RemoveAt(i);
+                    
+                    OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
+                    
                     return;
                 }
             }
         }
+    }
+
+    public List<RecipeSO> GetPendingRecipeSoList()
+    {
+        return pendingRecipeSoList;
     }
 }

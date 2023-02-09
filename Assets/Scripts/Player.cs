@@ -73,6 +73,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             {
                 if (selectedCounter != counter)
                 {
+                    if (selectedCounter != null)
+                    {
+                        selectedCounter.DeSelect();
+                    }
                     selectedCounter = counter;
                     selectedCounter.Select();
                 }
