@@ -3242,6 +3242,7 @@ MonoBehaviour:
   deliveryCounter: {fileID: 1096563610}
   playerInteractions: {fileID: 1431363379}
   chopEvent: {fileID: 11400000, guid: 636bb437cf8427f408dd65748f188af3, type: 2}
+  trashEvent: {fileID: 11400000, guid: c0237cf0faf112647a66c5c2ccf24514, type: 2}
 --- !u!4 &999268817
 Transform:
   m_ObjectHideFlags: 0
