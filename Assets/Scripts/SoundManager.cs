@@ -18,7 +18,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClipListSO footstepAudioClipListSo;
 
     [SerializeField] private DeliveryCounter deliveryCounter;
-    [SerializeField] private Player player;
+    [FormerlySerializedAs("player")] [SerializeField] private Player.PlayerInteractions playerInteractions;
     
     private void Start()
     {
@@ -27,7 +27,7 @@ public class SoundManager : MonoBehaviour
         TrashCounter.OnObjectTrashed += TrashCounterOnOnObjectTrashed;
         BaseCounter.OnKitchenObjectPlaced += OnKitchenObjectPlaced;
         CuttingCounter.OnAnyCut += OnAnyCut;
-        player.OnKitchenItemPicked += PlayerOnOnKitchenItemPicked;
+        playerInteractions.OnKitchenItemPicked += PlayerInteractionsOnOnKitchenItemPicked;
     }
 
     public void PlayFootstepSound(Transform originTransform, float volume)
@@ -45,9 +45,9 @@ public class SoundManager : MonoBehaviour
         PlaySound(objectDropAudioClipListSo, originTransform.position);
     }
 
-    private void PlayerOnOnKitchenItemPicked(object sender, EventArgs e)
+    private void PlayerInteractionsOnOnKitchenItemPicked(object sender, EventArgs e)
     {
-        PlaySound(objectPickupAudioClipListSo, player.transform.position);
+        PlaySound(objectPickupAudioClipListSo, playerInteractions.transform.position);
     }
 
     private void OnAnyCut(object sender, Transform originTransform)
