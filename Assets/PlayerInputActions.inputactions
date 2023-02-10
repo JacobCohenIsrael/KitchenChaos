@@ -201,6 +201,17 @@
                 },
                 {
                     "name": "",
+                    "id": "c3ee97f5-5028-4644-b245-cfd7ed2e26a2",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "24f188f3-d469-4855-88cb-793dc4160ec7",
                     "path": "<Keyboard>/f",
                     "interactions": "",
@@ -214,6 +225,17 @@
                     "name": "",
                     "id": "185cd526-812c-43ac-8159-a3b2743377b3",
                     "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AltInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4e9e3e91-f5f3-4d15-975b-6e5bae07ed5b",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

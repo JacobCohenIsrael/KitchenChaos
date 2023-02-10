@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,9 @@ using UnityEngine.Serialization;
 
 public class CuttingCounter : BaseCounter
 {
+    // CR: make the event handler send the transform instead of using class implicit on the sender
+    public static event EventHandler<Transform> OnAnyCut;
+    
     [SerializeField] private CuttingRecipeSO[] cuttingRecipieSOList;
     [SerializeField] private ProgressBarUI progressBarUI;
     [SerializeField] private CuttingCounterVisual cuttingCounterVisual;
@@ -56,6 +60,7 @@ public class CuttingCounter : BaseCounter
         {
             cuttingProgress++;
             cuttingCounterVisual.PlayCut();
+            OnAnyCut?.Invoke(this, transform);
             var cuttingRecipeSO = GetCuttingRecipe(GetKitchenObject().GetKitchenObjectSO());
             var progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax;
             progressBarUI.SetProgress(progressNormalized);

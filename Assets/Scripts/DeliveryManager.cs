@@ -10,6 +10,9 @@ public class DeliveryManager : MonoBehaviour
 
     public event EventHandler OnRecipeSpawned;
     public event EventHandler OnRecipeCompleted;
+
+    public event EventHandler OnDeliverySuccess;
+    public event EventHandler OnDeliveryFail;
     
     // CR: This is bad, because it creates a tight coupling and testing becomes hard
     public static DeliveryManager Instance { get; private set; }
@@ -77,11 +80,14 @@ public class DeliveryManager : MonoBehaviour
                     pendingRecipeSoList.RemoveAt(i);
                     
                     OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
+                    OnDeliverySuccess?.Invoke(this, EventArgs.Empty);
                     
                     return;
                 }
             }
         }
+        
+        OnDeliveryFail?.Invoke(this, EventArgs.Empty);
     }
 
     public List<RecipeSO> GetPendingRecipeSoList()

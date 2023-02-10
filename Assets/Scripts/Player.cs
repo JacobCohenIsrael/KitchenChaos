@@ -6,6 +6,8 @@ using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour, IKitchenObjectParent
 {
+    public event EventHandler OnKitchenItemPicked;
+    
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float rotateSpeed = 10f;
     [SerializeField] private GameInput gameInput;
@@ -157,6 +159,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public void SetKitchenObject(KitchenObject kitchenObject)
     {
         this.kitchenObject = kitchenObject;
+        if (kitchenObject != null)
+        {
+            OnKitchenItemPicked?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public KitchenObject GetKitchenObject()

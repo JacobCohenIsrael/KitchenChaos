@@ -7,7 +7,8 @@ namespace Counters
 {
     public class StoveCounter : BaseCounter
     {
-        private enum State
+        public event EventHandler<State> OnStateChanged;
+        public enum State
         {
             Idle,
             Frying,
@@ -27,8 +28,17 @@ namespace Counters
 
         private void Start()
         {
-            state = State.Idle;
+            SetState(State.Idle);
             stoveCounterVisual.Off();
+        }
+
+        private void SetState(State newState)
+        {
+            if (state != newState)
+            {
+                state = newState;
+                OnStateChanged?.Invoke(this, state);
+            }
         }
 
         private void Update()
@@ -46,7 +56,7 @@ namespace Counters
 
                         KitchenObject.SpawnKitchenObject(fryingRecipeSO.output, this);
                         burningRecipeSO = GetBurningRecipe(GetKitchenObject().GetKitchenObjectSO());
-                        state = State.Fried;
+                        SetState(State.Fried);
                         burningTimer = 0f;
                         progressBarUI.SetProgress(0f);
 
@@ -62,7 +72,7 @@ namespace Counters
 
                         KitchenObject.SpawnKitchenObject(burningRecipeSO.output, this);
 
-                        state = State.Burned;
+                        SetState(State.Burned);
                         stoveCounterVisual.Off();
                         progressBarUI.SetProgress(0f);
                     }
@@ -84,7 +94,7 @@ namespace Counters
                         {
                             GetKitchenObject().DestroySelf();
                             
-                            state = State.Idle;
+                            SetState(State.Idle);
                             stoveCounterVisual.Off();
                             progressBarUI.SetProgress(0f);
                         }
@@ -94,7 +104,7 @@ namespace Counters
                 {
                     GetKitchenObject().SetKitchenObjectParent(holder);
 
-                    state = State.Idle;
+                    SetState(State.Idle);
                     stoveCounterVisual.Off();
                     progressBarUI.SetProgress(0f);
                 }
@@ -107,7 +117,7 @@ namespace Counters
                     {
                         holder.GetKitchenObject().SetKitchenObjectParent(this);
                         fryingRecipeSO = GetFryingRecipe(GetKitchenObject().GetKitchenObjectSO());
-                        state = State.Frying;
+                        SetState(State.Frying);
                         fryingTimer = 0f;
                         progressBarUI.SetProgress(0f);
                         stoveCounterVisual.On();
@@ -116,26 +126,26 @@ namespace Counters
             }
         }
         
-        private bool HasRecipeResult(KitchenObjectSO inputKitchenObjectSO)
+        private bool HasRecipeResult(KitchenObjectSO inputKitchenObjectSo)
         {
-            return GetFryingRecipe(inputKitchenObjectSO) != null;
+            return GetFryingRecipe(inputKitchenObjectSo) != null;
         }
 
-        private KitchenObjectSO GetRecipeResult(KitchenObjectSO inputKitchenObjectSO)
+        private KitchenObjectSO GetRecipeResult(KitchenObjectSO inputKitchenObjectSo)
         {
-            var fryingRecipe = GetFryingRecipe(inputKitchenObjectSO);
+            var fryingRecipe = GetFryingRecipe(inputKitchenObjectSo);
             return fryingRecipe != null ? fryingRecipe.output : null;
         }
 
-        private FryingRecipeSO GetFryingRecipe(KitchenObjectSO inputKitchenObjectSO)
+        private FryingRecipeSO GetFryingRecipe(KitchenObjectSO inputKitchenObjectSo)
         {
-            return (from fryingRecipeSO in fryingRecipeSOList where fryingRecipeSO.input == inputKitchenObjectSO select fryingRecipeSO).FirstOrDefault();
+            return (from fryingRecipeSo in fryingRecipeSOList where fryingRecipeSo.input == inputKitchenObjectSo select fryingRecipeSo).FirstOrDefault();
 
         }
         
-        private BurningRecipeSO GetBurningRecipe(KitchenObjectSO inputKitchenObjectSO)
+        private BurningRecipeSO GetBurningRecipe(KitchenObjectSO inputKitchenObjectSo)
         {
-            return (from burningRecipeSO in burningRecipeSOList where burningRecipeSO.input == inputKitchenObjectSO select burningRecipeSO).FirstOrDefault();
+            return (from burningRecipeSo in burningRecipeSOList where burningRecipeSo.input == inputKitchenObjectSo select burningRecipeSo).FirstOrDefault();
 
         }
     }
