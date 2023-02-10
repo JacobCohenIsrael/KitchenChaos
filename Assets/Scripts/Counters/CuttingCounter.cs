@@ -8,12 +8,12 @@ using UnityEngine.Serialization;
 
 public class CuttingCounter : BaseCounter
 {
-    // CR: make the event handler send the transform instead of using class implicit on the sender
-    public static event EventHandler<Transform> OnAnyCut;
-    
-    [SerializeField] private CuttingRecipeSO[] cuttingRecipieSOList;
+    [SerializeField] private CuttingRecipeSO[] cuttingRecipeSoList;
     [SerializeField] private ProgressBarUI progressBarUI;
     [SerializeField] private CuttingCounterVisual cuttingCounterVisual;
+    
+    // CR: Here's a solution without static using Scriptable Object pawa!!! which also uses the transform as param.
+    [SerializeField] private EventSO chopEvent;
 
     private int cuttingProgress;
     
@@ -60,7 +60,7 @@ public class CuttingCounter : BaseCounter
         {
             cuttingProgress++;
             cuttingCounterVisual.PlayCut();
-            OnAnyCut?.Invoke(this, transform);
+            chopEvent.Raise(transform);
             var cuttingRecipeSO = GetCuttingRecipe(GetKitchenObject().GetKitchenObjectSO());
             var progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax;
             progressBarUI.SetProgress(progressNormalized);
@@ -87,7 +87,7 @@ public class CuttingCounter : BaseCounter
 
     private CuttingRecipeSO GetCuttingRecipe(KitchenObjectSO inputKitchenObjectSO)
     {
-        return (from cuttingRecipeSO in cuttingRecipieSOList where cuttingRecipeSO.input == inputKitchenObjectSO select cuttingRecipeSO).FirstOrDefault();
+        return (from cuttingRecipeSO in cuttingRecipeSoList where cuttingRecipeSO.input == inputKitchenObjectSO select cuttingRecipeSO).FirstOrDefault();
 
     }
 }

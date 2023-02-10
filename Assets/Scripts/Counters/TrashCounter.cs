@@ -1,17 +1,19 @@
 using System;
+using ScriptableObjects;
 using UnityEngine;
 
 namespace Counters
 {
     public class TrashCounter : BaseCounter
     {
-        public static event EventHandler<Transform> OnObjectTrashed;
+        [SerializeField] private EventSO trashEvent;
+        
         public override void Interact(IKitchenObjectParent holder)
         {
             if (holder.HasKitchenObject())
             {
                 holder.GetKitchenObject().DestroySelf();
-                OnObjectTrashed?.Invoke(this, transform);
+                trashEvent.Raise(transform);
             }
         }
     }

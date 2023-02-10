@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public event EventHandler<State> OnStateChanged;
+
+    // CR: instead of two events, just send the pause state
+    public event EventHandler<bool> OnPauseChanged;
     
     public enum State
     {
@@ -23,7 +26,8 @@ public class GameManager : MonoBehaviour
 
     private float startTimer = 1f;
     private float countdownTimer = 3f;
-    private float gameplayTimer = 0f;
+    private float gameplayTimer;
+    private bool isGamePaused;
 
     public float GetCountdownTimer()
     {
@@ -48,6 +52,35 @@ public class GameManager : MonoBehaviour
     {
         state = State.Pending;
         Instance = this;
+    }
+
+    private void Start()
+    {
+        GameInput.Instance.OnPauseAction += OnGamePaused;
+    }
+
+    private void OnDestroy()
+    {
+        GameInput.Instance.OnPauseAction -= OnGamePaused;
+    }
+
+    private void OnGamePaused(object sender, EventArgs e)
+    {
+        TogglePauseGame();
+    }
+
+    public void TogglePauseGame()
+    {
+        isGamePaused = !isGamePaused;
+        OnPauseChanged?.Invoke(this, isGamePaused);
+        if (isGamePaused)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     private void Update()

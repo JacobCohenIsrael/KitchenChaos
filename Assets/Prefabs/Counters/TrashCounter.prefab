@@ -190,6 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedCounterVisual: {fileID: 8423418208531671954}
   counterTop: {fileID: 3702317968289066606}
+  trashEvent: {fileID: 11400000, guid: c0237cf0faf112647a66c5c2ccf24514, type: 2}
 --- !u!4 &7258195306447033382 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5758472643282121625, guid: 5b761155e7cff2847b0e8f33eea0bccc,

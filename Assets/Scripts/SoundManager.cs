@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Counters;
+using Player;
 using ScriptableObjects;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour
@@ -16,18 +13,30 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClipListSO objectDropAudioClipListSo;
     [SerializeField] private AudioClipListSO objectTrashedAudioClipListSo;
     [SerializeField] private AudioClipListSO footstepAudioClipListSo;
-
     [SerializeField] private DeliveryCounter deliveryCounter;
-    [FormerlySerializedAs("player")] [SerializeField] private Player.PlayerInteractions playerInteractions;
+    [SerializeField] private PlayerInteractions playerInteractions;
+    [SerializeField] private EventSO chopEvent;
+    [SerializeField] private EventSO trashEvent;
     
     private void Start()
     {
         DeliveryManager.Instance.OnDeliverySuccess += OnDeliverySuccess;
         DeliveryManager.Instance.OnDeliveryFail += OnDeliveryFail;
-        TrashCounter.OnObjectTrashed += TrashCounterOnOnObjectTrashed;
         BaseCounter.OnKitchenObjectPlaced += OnKitchenObjectPlaced;
-        CuttingCounter.OnAnyCut += OnAnyCut;
         playerInteractions.OnKitchenItemPicked += PlayerInteractionsOnOnKitchenItemPicked;
+        trashEvent.Subscribe(TrashCounterOnOnObjectTrashed);
+        chopEvent.Subscribe(OnAnyCut);
+    }
+
+    private void OnDestroy()
+    {
+        DeliveryManager.Instance.OnDeliverySuccess -= OnDeliverySuccess;
+        DeliveryManager.Instance.OnDeliveryFail -= OnDeliveryFail;
+        BaseCounter.OnKitchenObjectPlaced -= OnKitchenObjectPlaced;
+        playerInteractions.OnKitchenItemPicked -= PlayerInteractionsOnOnKitchenItemPicked;
+        chopEvent.Unsubscribe(OnAnyCut);
+        trashEvent.Unsubscribe(TrashCounterOnOnObjectTrashed);
+
     }
 
     public void PlayFootstepSound(Transform originTransform, float volume)
@@ -35,7 +44,7 @@ public class SoundManager : MonoBehaviour
         PlaySound(footstepAudioClipListSo, originTransform.position, volume);
     }
 
-    private void TrashCounterOnOnObjectTrashed(object sender, Transform originTransform)
+    private void TrashCounterOnOnObjectTrashed(Transform originTransform)
     {
         PlaySound(objectTrashedAudioClipListSo, originTransform.position);
     }
@@ -50,7 +59,7 @@ public class SoundManager : MonoBehaviour
         PlaySound(objectPickupAudioClipListSo, playerInteractions.transform.position);
     }
 
-    private void OnAnyCut(object sender, Transform originTransform)
+    private void OnAnyCut(Transform originTransform)
     {
         PlaySound(choppingAudioClipListSo, originTransform.position);
     }

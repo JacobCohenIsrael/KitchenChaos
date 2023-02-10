@@ -115,12 +115,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedCounterVisual: {fileID: 1567519041138192443}
   counterTop: {fileID: 413957520590485189}
-  cuttingRecipieSOList:
+  cuttingRecipeSoList:
   - {fileID: 11400000, guid: c47cb7c5b5d10b242b4f4bd5b5fbe3d5, type: 2}
   - {fileID: 11400000, guid: 407ab7bc4fe487f4a8c8dc82aa2bd5f9, type: 2}
   - {fileID: 11400000, guid: 65d229ecf0ab16f419e4a0d473db9aba, type: 2}
   progressBarUI: {fileID: 7883648135032964657}
   cuttingCounterVisual: {fileID: 1827417906855352648}
+  chopEvent: {fileID: 11400000, guid: 636bb437cf8427f408dd65748f188af3, type: 2}
 --- !u!4 &5937328243699944589 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5758472643282121625, guid: 5b761155e7cff2847b0e8f33eea0bccc,
