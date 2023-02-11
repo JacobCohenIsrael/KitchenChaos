@@ -17,15 +17,14 @@ namespace Counters
         private int platesSpawned;
         private void Update()
         {
+            // CR: no need to update timer if plates are at max
+            if (platesSpawned >= platesSpawnMax || !GameManager.Instance.IsGamePlaying()) return;
             spawnPlateTimer += Time.deltaTime;
             if (spawnPlateTimer > spawnPlateTimerMax)
             {
-                if (platesSpawned < platesSpawnMax)
-                {
-                    platesSpawned++;
-                    spawnPlateTimer = 0f;
-                    OnPlateSpawned?.Invoke(this, EventArgs.Empty);
-                }
+                platesSpawned++;
+                spawnPlateTimer = 0f;
+                OnPlateSpawned?.Invoke(this, EventArgs.Empty);
             }    
         }
 

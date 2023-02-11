@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
 
     private State state;
 
-    private float startTimer = 1f;
     private float countdownTimer = 3f;
     private float gameplayTimer;
     private bool isGamePaused;
@@ -32,6 +31,11 @@ public class GameManager : MonoBehaviour
     public float GetCountdownTimer()
     {
         return countdownTimer;
+    }
+
+    public bool IsGamePlaying()
+    {
+        return state == State.Playing;
     }
 
     public float GetTimeLeftNormalized()
@@ -57,11 +61,21 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         GameInput.Instance.OnPauseAction += OnGamePaused;
+        GameInput.Instance.InteractEvent += OnInteract;
     }
 
     private void OnDestroy()
     {
         GameInput.Instance.OnPauseAction -= OnGamePaused;
+        GameInput.Instance.InteractEvent -= OnInteract;
+    }
+    
+    private void OnInteract(object sender, EventArgs e)
+    {
+        if (state == State.Pending)
+        {
+            ChangeState(State.Countdown);
+        }
     }
 
     private void OnGamePaused(object sender, EventArgs e)
@@ -88,12 +102,6 @@ public class GameManager : MonoBehaviour
         switch (state)
         {
             case State.Pending:
-                startTimer -= Time.deltaTime;
-                if (startTimer <= 0)
-                {
-                    ChangeState(State.Countdown);
-                }
-
                 break;
             case State.Countdown:
                 countdownTimer -= Time.deltaTime;

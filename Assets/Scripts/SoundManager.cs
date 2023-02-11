@@ -1,8 +1,10 @@
 using System;
+using System.Numerics;
 using Player;
 using ScriptableObjects;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Vector3 = UnityEngine.Vector3;
 
 public class SoundManager : MonoBehaviour
 {
@@ -13,8 +15,11 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClipListSO objectDropAudioClipListSo;
     [SerializeField] private AudioClipListSO objectTrashedAudioClipListSo;
     [SerializeField] private AudioClipListSO footstepAudioClipListSo;
+    [SerializeField] private AudioClipListSO warningAudioClipListSo;
+    
     [SerializeField] private DeliveryCounter deliveryCounter;
     [SerializeField] private PlayerInteractions playerInteractions;
+    
     [SerializeField] private EventSO chopEvent;
     [SerializeField] private EventSO trashEvent;
     
@@ -37,6 +42,11 @@ public class SoundManager : MonoBehaviour
         chopEvent.Unsubscribe(OnAnyCut);
         trashEvent.Unsubscribe(TrashCounterOnOnObjectTrashed);
 
+    }
+
+    public void PlayCountdown()
+    {
+        PlaySound(warningAudioClipListSo, Camera.main.transform.position, 1f);
     }
 
     public void PlayFootstepSound(Transform originTransform, float volume)

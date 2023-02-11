@@ -33,7 +33,7 @@ public class DeliveryManager : MonoBehaviour
     private void Update()
     {
         // CR: no need to inc timers
-        if (pendingRecipeSoList.Count >= maxPendingRecipes) return;
+        if (pendingRecipeSoList.Count >= maxPendingRecipes || !GameManager.Instance.IsGamePlaying()) return;
         
         spawnRecipeTimer -= Time.deltaTime;
         if (spawnRecipeTimer <= 0f)
