@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -10,12 +11,22 @@ namespace UI
         private void Start()
         {
             GameManager.Instance.OnStateChanged += OnStateChanged;
+            GameInput.Instance.InteractEvent += OnInteract;
             Hide();
         }
 
         private void OnDestroy()
         {
             GameManager.Instance.OnStateChanged -= OnStateChanged;
+            GameInput.Instance.InteractEvent -= OnInteract;
+        }
+
+        private void OnInteract(object sender, EventArgs e)
+        {
+            if (GameManager.Instance.IsGameOver())
+            {
+                SceneLoader.Load(SceneLoader.Scene.MainMenuScene);
+            }
         }
 
         private void OnStateChanged(object sender, GameManager.State state)

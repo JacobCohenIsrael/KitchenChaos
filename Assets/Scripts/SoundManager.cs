@@ -8,6 +8,8 @@ using Vector3 = UnityEngine.Vector3;
 
 public class SoundManager : MonoBehaviour
 {
+    public static SoundManager Instance;
+    
     [SerializeField] private AudioClipListSO deliverySuccessAudioClipListSo;
     [SerializeField] private AudioClipListSO deliveryFailAudioClipListSo;
     [SerializeField] private AudioClipListSO choppingAudioClipListSo;
@@ -22,7 +24,15 @@ public class SoundManager : MonoBehaviour
     
     [SerializeField] private EventSO chopEvent;
     [SerializeField] private EventSO trashEvent;
-    
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+
     private void Start()
     {
         DeliveryManager.Instance.OnDeliverySuccess += OnDeliverySuccess;
@@ -42,6 +52,11 @@ public class SoundManager : MonoBehaviour
         chopEvent.Unsubscribe(OnAnyCut);
         trashEvent.Unsubscribe(TrashCounterOnOnObjectTrashed);
 
+    }
+
+    public void PlayWarningSound(Transform originTransform)
+    {
+        PlaySound(warningAudioClipListSo, originTransform.position);
     }
 
     public void PlayCountdown()

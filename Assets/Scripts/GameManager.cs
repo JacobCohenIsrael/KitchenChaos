@@ -38,6 +38,11 @@ public class GameManager : MonoBehaviour
         return state == State.Playing;
     }
 
+    public bool IsGameOver()
+    {
+        return state == State.GameOver;
+    }
+
     public float GetTimeLeftNormalized()
     {
         return 1 - (gameplayTimer / gameLength);
